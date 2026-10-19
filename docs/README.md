@@ -9,6 +9,7 @@ orçamento da Telhas Barreiro, antes de ligar no número real.
 |---|---|
 | [01-mapeamento.md](01-mapeamento.md) | Goal, fonte de verdade, cadência, personas, risco, handoff. Base dos prompts |
 | [02-perguntas-abertas.md](02-perguntas-abertas.md) | 26 lacunas do briefing, classificadas por bloqueio |
+| [03-questionario-cliente.md](03-questionario-cliente.md) | 30 perguntas prontas pra enviar à Telhas Barreiro |
 | [prompt-bruna-v1-conversacional.md](prompt-bruna-v1-conversacional.md) | Agente que conversa. Sem tool. Gera rascunho |
 | [prompt-bruna-v1-verificador.md](prompt-bruna-v1-verificador.md) | Gatekeeper. Valida, trava, decide encaminhamento, emite o JSON |
 | [testes-bruna.md](testes-bruna.md) | Suíte de teste: revisão estática + 6 personas + red-team + stress |
