@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Check, CheckCheck, Play, Pause, AlertCircle } from "lucide-react"
+import { formatWhatsAppText } from "@/lib/parse-markers"
 
 interface AudioBubbleProps {
   messageId: string
@@ -213,7 +214,18 @@ export function AudioBubble({
             Transcrição
           </span>
           <p className="whitespace-pre-wrap text-[13.5px] leading-snug text-[#3b4a54]">
-            {transcript}
+            {formatWhatsAppText(transcript).map((seg, i) => {
+              if (seg.kind === "bold") return <strong key={i}>{seg.text}</strong>
+              if (seg.kind === "italic") return <em key={i}>{seg.text}</em>
+              if (seg.kind === "strike") return <s key={i}>{seg.text}</s>
+              if (seg.kind === "mono")
+                return (
+                  <code key={i} className="font-mono text-[12.5px]">
+                    {seg.text}
+                  </code>
+                )
+              return <span key={i}>{seg.text}</span>
+            })}
           </p>
         </div>
       )}

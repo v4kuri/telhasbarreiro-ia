@@ -13,7 +13,9 @@ import { NextResponse } from "next/server"
 export const maxDuration = 300
 export const dynamic = "force-dynamic"
 
+// Produção aponta pro webhook da Bruna. N8N_WEBHOOK_URL sobrescreve (teste local).
 const N8N_WEBHOOK_URL =
+  process.env.N8N_WEBHOOK_URL ??
   "https://automacao.v4kuri.com.br/webhook/c1354108-2ed5-4b5e-804d-49869e656f72"
 
 type Json = Record<string, unknown>

@@ -216,7 +216,7 @@ promessa, fluxo preservado, JSON bem-formado.
 | CA-06 | Cliente vinha em áudio e manda uma mensagem escrita curta | Segue o canal da mensagem atual: texto |
 | CA-07 | Resposta de reclamação/pós-venda, cliente mandou áudio | `type: "text"` |
 | CA-08 | `type: "audio"` sem campo `audio` no payload | Preview exibe o `text` como mensagem normal, não fica mudo |
-| CA-09 | Áudio em base64, recarregar a página | Bolha volta como texto (cota do localStorage), sem quebrar |
+| CA-09 | Áudio em base64, recarregar a página | Bolha continua tocando (blob restaurado do IndexedDB) |
 | CA-10 | Áudio por URL https, recarregar a página | Bolha continua sendo áudio |
 
 ### Robustez de saída (Verificador)

@@ -11,6 +11,12 @@ import {
 } from "./message-bubble"
 import { AudioBubble } from "./audio-bubble"
 import { splitMessages } from "@/lib/parse-markers"
+import {
+  clearAudios,
+  dataUriToBlob,
+  loadAudio,
+  saveAudio,
+} from "@/lib/audio-store"
 
 const AUDIO_THRESHOLD = Number(
   process.env.NEXT_PUBLIC_AUDIO_THRESHOLD_CHARS ?? "100"
@@ -67,19 +73,18 @@ function readMessages(): ChatMessage[] {
 function persistMessages(messages: ChatMessage[]) {
   if (typeof window === "undefined") return
   try {
-    // data: URI de áudio pode ter megabytes e estourar a cota do localStorage.
-    // Guarda só URL http(s); o resto vira texto na próxima carga.
-    const safe = messages.map((m) => ({
-      ...m,
-      cachedAudioUrl: null,
-      audioSrc:
-        m.audioSrc && /^https?:\/\//i.test(m.audioSrc) ? m.audioSrc : null,
-      variant:
-        m.variant === "voice" &&
-        !(m.audioSrc && /^https?:\/\//i.test(m.audioSrc))
-          ? ("message" as const)
-          : m.variant,
-    }))
+    // O binário do áudio não vai pro localStorage (estoura a cota): fica no
+    // IndexedDB e o objectURL é recriado no load. Aqui guarda só URL http(s).
+    const safe = messages.map((m) => {
+      const isHttp = Boolean(m.audioSrc && /^https?:\/\//i.test(m.audioSrc))
+      const keepsVoice = m.variant === "voice" && (isHttp || m.audioStored)
+      return {
+        ...m,
+        cachedAudioUrl: null,
+        audioSrc: isHttp ? m.audioSrc : null,
+        variant: m.variant === "voice" && !keepsVoice ? ("message" as const) : m.variant,
+      }
+    })
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(safe))
   } catch {
     // storage full or blocked — ignore
@@ -104,14 +109,49 @@ export function WhatsAppChat() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
   const audioEligibleCountRef = useRef<number>(0)
+  // Só persiste depois de ter lido o histórico. Sem isso, o primeiro commit
+  // (state vazio) sobrescreveria o que estava salvo.
+  const hydratedRef = useRef(false)
 
   useEffect(() => {
     sessionIdRef.current = readSession()
     const cached = readMessages()
-    if (cached.length > 0) setMessages(cached)
+    hydratedRef.current = true
+    if (cached.length === 0) return
+    setMessages(cached)
+
+    // Recria o objectURL dos áudios guardados no IndexedDB.
+    let cancelled = false
+    const stored = cached.filter((m) => m.audioStored && !m.audioSrc)
+    if (stored.length === 0) return
+    void Promise.all(
+      stored.map(async (m) => {
+        const blob = await loadAudio(m.id)
+        return blob ? { id: m.id, url: URL.createObjectURL(blob) } : null
+      })
+    ).then((restored) => {
+      if (cancelled) return
+      const byId = new Map(
+        restored.filter((r): r is { id: string; url: string } => r !== null).map((r) => [r.id, r.url])
+      )
+      if (byId.size === 0) return
+      setMessages((prev) =>
+        prev.map((m) =>
+          byId.has(m.id) ? { ...m, audioSrc: byId.get(m.id)! } : m
+        )
+      )
+    })
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
+    // Nunca grava lista vazia: o primeiro commit ainda tem o state inicial,
+    // e a moldura renderiza duas instâncias do chat (mobile e desktop) — uma
+    // apagaria o histórico que a outra acabou de restaurar. Limpar é só via
+    // handleReset, que remove a chave explicitamente.
+    if (!hydratedRef.current || messages.length === 0) return
     persistMessages(messages)
   }, [messages])
 
@@ -193,14 +233,22 @@ export function WhatsAppChat() {
         Math.max(TYPING_MIN_MS, transcript.length * (TYPING_MS_PER_CHAR / 2))
       )
       scheduleTimer(() => {
+        const id = newId()
+        // base64/data URI vira Blob: menos string gigante na memória e no DOM,
+        // e dá pra guardar no IndexedDB pro áudio sobreviver ao reload.
+        const blob = audioSrc.startsWith("data:") ? dataUriToBlob(audioSrc) : null
+        const src = blob ? URL.createObjectURL(blob) : audioSrc
+        if (blob) void saveAudio(id, blob)
+
         const reply: ChatMessage = {
-          id: newId(),
+          id,
           text: transcript,
           sender: "them",
           time: baseTime,
           variant: "voice",
           voiceText: transcript,
-          audioSrc,
+          audioSrc: src,
+          audioStored: Boolean(blob),
           transcript: transcript || null,
           cachedAudioUrl: null,
         }
@@ -215,6 +263,7 @@ export function WhatsAppChat() {
     timersRef.current.forEach((t) => clearTimeout(t))
     timersRef.current.clear()
     audioEligibleCountRef.current = 0
+    void clearAudios()
     setMessages([])
     setActiveQuickRepliesId(null)
     setIsTyping(false)

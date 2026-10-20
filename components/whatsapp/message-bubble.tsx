@@ -42,6 +42,8 @@ export interface ChatMessage {
   audioSrc?: string | null
   /** Texto que acompanha o áudio, exibido como transcrição. */
   transcript?: string | null
+  /** Áudio binário guardado no IndexedDB sob este id (caso base64). */
+  audioStored?: boolean
 }
 
 interface MessageBubbleProps {

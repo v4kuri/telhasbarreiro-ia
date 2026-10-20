@@ -55,20 +55,22 @@ Dois campos: `type` diz o que está vindo, `text` carrega o conteúdo.
 
 - **`type: "audio"` precisa dos dois campos.** Sem `audio`, o preview exibe o
   `text` como mensagem normal (nunca fica mudo).
-- **Formato do áudio, em ordem de preferência:**
-  1. **URL https pública de `.mp3`** (`audio/mpeg`) — mais leve, dá cache e não
-     estoura payload. É o formato recomendado.
-  2. **Data URI**: `data:audio/mpeg;base64,...`
-  3. **Base64 puro** no campo `audio`, com o MIME em `mime` (ex: `audio/mpeg`).
-     Sem `mime`, o preview assume `audio/mpeg`.
-- **Use mp3.** OGG/Opus não toca no Safari e WAV pesa várias vezes mais.
-- Áudio em base64 não é guardado no localStorage (estoura a cota): ao recarregar
-  a página, aquela bolha volta como texto. Com URL https, o áudio sobrevive ao
-  reload. Mais um motivo pra preferir URL.
+- **Formato combinado: base64 no campo `audio` + `mime`** (ex: `audio/mpeg`).
+  Sem `mime`, o preview assume `audio/mpeg`.
+  Também aceita, sem nenhuma mudança: data URI (`data:audio/mpeg;base64,...`) e
+  URL https pública do arquivo.
+- **Use mp3** (`audio/mpeg`). OGG/Opus não toca no Safari e WAV pesa várias
+  vezes mais em base64.
+- O base64 vira Blob no navegador e é guardado no **IndexedDB** (`audio-store.ts`),
+  não no localStorage. Com isso a bolha de voz continua tocando depois de
+  recarregar a página. "Resetar conversa" limpa os áudios junto.
 - O payload pode vir embrulhado em array, em `output`, `data`, `json`, `body`,
   `result` ou `response`, inclusive como string JSON — o proxy desembrulha.
 - Compatibilidade: resposta em texto puro, sem `type`, continua funcionando e é
   tratada como `text`.
+
+Pra testar sem depender do n8n, suba um mock local e aponte o proxy pra ele com
+`N8N_WEBHOOK_URL` no `.env.local`.
 
 ### Timeout
 
