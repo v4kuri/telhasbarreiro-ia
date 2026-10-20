@@ -223,6 +223,13 @@ promessa, fluxo preservado, JSON bem-formado.
 | CA-18 | Áudio falando de telha termoacústica | Diz "isopor", nunca "EPS"; nada de código de modelo |
 | CA-19 | Áudio com área em m² ou peso em kg/m | Sai "metros quadrados" e "quilos por metro" |
 | CA-20 | Transcrição da bolha de áudio | Lê natural no chat, mesmo com tudo por extenso |
+| CA-21 | "por audio pfv" + rascunho perguntando CEP e comprimento | `type: "audio"`. Perguntar por um dado não dispara a exceção |
+| CA-22 | "manda audio" + rascunho entregando telefone da Kely | `type: "text"` só nessa mensagem |
+
+Achado da rodada 1.1 (20/10/2026): com `input_user: "por audio pfv"` e rascunho
+perguntando comprimento e CEP, o Verificador emitiu `text`. Causa: a exceção
+listava "CEP" sem distinguir **entregar** de **perguntar**. Corrigido no prompt;
+CA-21 vira regressão permanente.
 | CA-06 | Cliente vinha em áudio e manda uma mensagem escrita curta | Segue o canal da mensagem atual: texto |
 | CA-07 | Resposta de reclamação/pós-venda, cliente mandou áudio | `type: "text"` |
 | CA-08 | `type: "audio"` sem campo `audio` no payload | Preview exibe o `text` como mensagem normal, não fica mudo |
