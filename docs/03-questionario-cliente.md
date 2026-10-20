@@ -6,6 +6,9 @@
 > Cada resposta aqui transforma uma transferência em uma resposta imediata.
 > Atualizado em 20/10/2026, depois da rodada 1 de testes contra o fluxo real.
 
+Para mandar direto no WhatsApp, use a versão em mensagens:
+[04-perguntas-whatsapp.md](04-perguntas-whatsapp.md).
+
 ## Como ler
 
 - **Bloco A — trava o atendimento.** A Bruna recebe essa pergunta todo dia e não
@@ -91,8 +94,8 @@ pode dizer "pré-pintada ou pintura eletrostática" e passar pro consultor.
 
 20. Existe **catálogo completo em PDF** com link? Hoje a Bruna só tem as 4 fichas
     técnicas publicadas no site.
-21. Qual é o **horário oficial** que ela deve informar: 07h30 às 17h (briefing)
-    ou 07h30 às 17h15 (site)?
+21. O horário que ela informa é o do briefing, 07h30 às 17h. O site diz 17h15 —
+    vale avisar vocês pra alinharem, mas não trava nada.
 
 ---
 
@@ -128,10 +131,9 @@ pode dizer "pré-pintada ou pintura eletrostática" e passar pro consultor.
 
 ## C4. Áudio
 
-30. A Bruna responde em áudio quando o cliente manda áudio ou pede. Vocês querem
-    que ela **sempre** responda em áudio pra quem mandou áudio, ou só quando o
-    cliente pedir?
-31. Tem preferência de **voz** (mais jovem, mais firme, masculina ou feminina)?
+30. Tem preferência de **voz** (mais jovem, mais firme, masculina ou feminina)?
+    Responder em áudio pra quem manda áudio já está definido no briefing (item
+    2.3), então isso não precisa ser perguntado de novo.
 
 ---
 
