@@ -54,18 +54,45 @@ Ela pode repetir o que está na ficha técnica: inclinação mínima de 10%, ter
 *11. Produtos*
 Vocês trabalham com treliça? E quais itens de fixação ela pode oferecer junto da telha (parafuso, cumeeira, veda calha)?
 
-*12. Unidades e campanha*
+*12. Diamante Telhas*
+Vi que as unidades de Comendador Levy Gasparian e Petrópolis aparecem como *Diamante Telhas*, com CNPJ, site e telefone próprios. Nesta primeira versão a assistente se apresenta como *Telhas Barreiro* pra todo mundo, independente da região do cliente.
+
+Faz sentido assim, ou vocês querem que ela mude de marca conforme a região (cliente do RJ sendo atendido como Diamante, com o site e os contatos de lá)? Se for o caso, a gente monta uma versão por loja. E quando o cliente pergunta diretamente qual a relação entre as duas, o que ela pode responder?
+
+*13. Unidades e campanha*
 O endereço de Petrópolis é Estrada União e Indústria, 7521, Nogueira? Peguei no site e quero confirmar. E tem campanha ativa hoje que ela possa mencionar? Vi um cupom de desconto no Instagram. Ela pode citar, ou desconto é sempre com o vendedor?
 
-*13. Follow-up*
+*14. Follow-up*
 Se o cliente some, ela retoma em 1 dia útil. Em que horário, e pode mandar no sábado? O orçamento tem validade, quantos dias até precisar refazer?
 
-*14. Voz*
+*15. Voz*
 Ela responde em áudio pra quem manda áudio, como vocês pediram. Tem preferência de voz? Mais jovem, mais firme, feminina ou masculina?
 
 Qualquer informação que não estiver fechada, me falam que eu deixo ela sempre encaminhando pro consultor naquele ponto. Prefiro isso a ela arriscar um número errado com o cliente de vocês.
 
 Assim que responderem as primeiras eu já atualizo e mando o link pra vocês testarem a conversa.
+```
+
+## Mensagem do link de teste (manda separado, logo depois)
+
+```
+E não precisam esperar responder tudo pra ver funcionando: a primeira versão já está de pé pra vocês testarem.
+
+Link: https://telhasbarreiro-ia.vercel.app
+
+É uma simulação do WhatsApp, abre no celular ou no computador, sem instalar nada. Conversem com ela como se fossem um cliente de vocês: pedindo orçamento de telha, perguntando a diferença entre sanduíche e forro, pedindo preço, mandando uma lista de material, reclamando de um pedido. Quanto mais parecido com o cliente real, melhor pra gente.
+
+Duas coisas que valem testar:
+
+*Ela responde em áudio.* É só pedir, "me manda por áudio" ou "prefiro ouvir", que daí em diante ela fala em vez de escrever, e manda a transcrição junto pra quem quiser ler. Quando a resposta tiver link, telefone ou e-mail, essa mensagem específica vai por escrito, porque número ditado o cliente não consegue copiar.
+
+*Dá pra recomeçar do zero.* No menu dos três pontinhos, lá em cima à direita, tem "Resetar conversa". Útil pra testar outro tipo de cliente sem a conversa anterior atrapalhar.
+
+A resposta pode levar alguns segundos, é normal nessa fase.
+
+O que ela ainda não faz: falar preço, prazo, frete e cor, justamente o que está nas perguntas acima. Nesses pontos ela encaminha pro consultor de propósito, pra não arriscar um número errado. Conforme vocês forem respondendo, ela vai respondendo mais coisa sozinha.
+
+Se acharem alguma resposta estranha, fora do tom de vocês ou simplesmente errada, me mandem o print. É assim que a gente afina.
 ```
 
 ---
