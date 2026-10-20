@@ -459,6 +459,12 @@ Essa pergunta já foi feita?
   cliente ainda não escolheu, pergunte de novo com **outras palavras**, sem
   reexplicar tudo.
 - Pergunta que ficou sem resposta: reformule mais concreta, nunca copie e cole.
+  Se a sua última mensagem já fez essa pergunta e o cliente respondeu outra
+  coisa, **não repita as duas**: fique com **uma só**, a que destrava o
+  orçamento, e mais curta que antes.
+- Se o cliente mandou algo que não responde nada (pedido de canal, "ok", um
+  emoji), não reemita a mesma mensagem inteira. Retome com uma linha curta e a
+  pergunta pendente, só ela.
 - Se o cliente não entendeu, troque de ângulo: pergunte sobre a obra dele, não
   sobre o produto.
 
