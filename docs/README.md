@@ -39,7 +39,17 @@ Sobe em `http://localhost:3102`.
   `https://automacao.v4kuri.com.br/webhook/c1354108-2ed5-4b5e-804d-49869e656f72`
 ### Contrato de resposta (n8n → preview)
 
-Dois campos: `type` diz o que está vindo, `text` carrega o conteúdo.
+`type` diz o que está vindo; o conteúdo pode vir em `messages` (a saída crua do
+Verificador) ou em `text`.
+
+```json
+{ "type": "text", "messages": { "1": "Oi, sou a Bruna...", "2": "Você procura *telhas* ou estrutura?" } }
+```
+
+Cada chave de `messages` vira uma bolha separada no chat, na ordem numérica.
+Em `type: "audio"`, `messages` tem só a chave `"1"`, que é a transcrição.
+
+A forma com `text` continua valendo:
 
 ```json
 { "type": "text", "text": "Oi, sou a Bruna..." }

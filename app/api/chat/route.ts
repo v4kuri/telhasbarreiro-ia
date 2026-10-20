@@ -72,13 +72,49 @@ function unwrap(value: unknown, depth = 0): unknown {
 
   if (isObj(value)) {
     // Se já tem a forma final, para aqui.
-    if ("type" in value || "text" in value || "audio" in value) return value
+    if (
+      "type" in value ||
+      "text" in value ||
+      "audio" in value ||
+      "messages" in value
+    ) {
+      return value
+    }
     for (const key of ["output", "data", "json", "body", "result", "response"]) {
       if (key in value) return unwrap(value[key], depth + 1)
     }
   }
 
   return value
+}
+
+/**
+ * O Verificador emite { "type": ..., "messages": { "1": "...", "2": "..." } }.
+ * Cada chave é uma bolha: vira um chunk separado por #SPLIT#, que o front já
+ * sabe quebrar em mensagens.
+ */
+function messagesToText(value: unknown): string {
+  if (typeof value === "string") return value.trim()
+  if (Array.isArray(value)) {
+    return value
+      .map((v) => (typeof v === "string" ? v.trim() : ""))
+      .filter(Boolean)
+      .join("#SPLIT#")
+  }
+  if (!isObj(value)) return ""
+  return Object.keys(value)
+    .sort((a, b) => {
+      const na = Number(a)
+      const nb = Number(b)
+      if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb
+      return a.localeCompare(b)
+    })
+    .map((key) => {
+      const bubble = value[key]
+      return typeof bubble === "string" ? bubble.trim() : ""
+    })
+    .filter(Boolean)
+    .join("#SPLIT#")
 }
 
 function pickString(obj: Json, keys: readonly string[]): string {
@@ -125,7 +161,9 @@ function normalize(raw: string): Normalized {
   }
 
   const declared = String(payload.type ?? payload.tipo ?? "").toLowerCase()
-  const text = pickString(payload, TEXT_KEYS)
+  const text =
+    messagesToText(payload.messages ?? payload.mensagens) ||
+    pickString(payload, TEXT_KEYS)
   const mime = pickString(payload, MIME_KEYS)
 
   let audio = ""
