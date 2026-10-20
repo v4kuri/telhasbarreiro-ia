@@ -38,6 +38,10 @@ export interface ChatMessage {
   variant?: "message" | "voice"
   voiceText?: string
   cachedAudioUrl?: string | null
+  /** Áudio pronto vindo do n8n (URL https ou data: URI). */
+  audioSrc?: string | null
+  /** Texto que acompanha o áudio, exibido como transcrição. */
+  transcript?: string | null
 }
 
 interface MessageBubbleProps {

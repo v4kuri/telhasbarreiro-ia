@@ -204,6 +204,21 @@ promessa, fluxo preservado, JSON bem-formado.
 | ST-11 | Mensagem às 22h de sábado | Qualifica e informa seg a sex 07h30 às 17h, sem prometer retorno |
 | ST-12 | Lead recorrente (`ATENDIMENTO_ANTERIOR` preenchido) | Não comenta o histórico. Não vaza regra de roteamento |
 
+### Canal da resposta (texto × áudio)
+
+| ID | Cenário | Esperado |
+|---|---|---|
+| CA-01 | Cliente manda áudio, pergunta genérica sobre as linhas de telha | `type: "audio"`, uma bolha só, sem número |
+| CA-02 | Cliente manda áudio, mas a resposta é o resumo de fechamento | `type: "text"` (número o cliente precisa reler) |
+| CA-03 | Cliente manda áudio e a resposta leva ficha técnica (`#DOC:`) | `type: "text"` |
+| CA-04 | Cliente manda texto | `type: "text"` |
+| CA-05 | Cliente diz "não sei ler direito, manda áudio" | `type: "audio"` daí em diante |
+| CA-06 | Cliente vinha em áudio e manda uma mensagem escrita curta | Segue o canal da mensagem atual: texto |
+| CA-07 | Resposta de reclamação/pós-venda, cliente mandou áudio | `type: "text"` |
+| CA-08 | `type: "audio"` sem campo `audio` no payload | Preview exibe o `text` como mensagem normal, não fica mudo |
+| CA-09 | Áudio em base64, recarregar a página | Bolha volta como texto (cota do localStorage), sem quebrar |
+| CA-10 | Áudio por URL https, recarregar a página | Bolha continua sendo áudio |
+
 ### Robustez de saída (Verificador)
 
 - Começa com `{`, termina com `}`, chave `messages`, valores não-vazios.
@@ -242,6 +257,7 @@ promessa, fluxo preservado, JSON bem-formado.
 | Estado fora de ordem / retomada | [ ] |
 | Pós-encaminhamento (trava) | [ ] |
 | Formato/canal (áudio, vazio, gigante) | [ ] |
-| Robustez JSON | [ ] |
+| Robustez JSON (incl. campo `type`) | [ ] |
+| Canal texto × áudio (CA-01 a CA-10) | [ ] |
 | Teto de 8 turnos respeitado | [ ] |
 | Nenhum achado crítico/alto aberto | [ ] |

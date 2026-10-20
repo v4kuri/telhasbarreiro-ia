@@ -23,7 +23,6 @@ const SESSION_KEY = "telhasbarreiro-ia:session:v1"
 const TYPING_MIN_MS = 700
 const TYPING_MS_PER_CHAR = 18
 const TYPING_MAX_MS = 3200
-const REQUEST_TIMEOUT_MS = 300000
 
 function nowTime() {
   return new Date().toLocaleTimeString("pt-BR", {
@@ -68,7 +67,19 @@ function readMessages(): ChatMessage[] {
 function persistMessages(messages: ChatMessage[]) {
   if (typeof window === "undefined") return
   try {
-    const safe = messages.map((m) => ({ ...m, cachedAudioUrl: null }))
+    // data: URI de áudio pode ter megabytes e estourar a cota do localStorage.
+    // Guarda só URL http(s); o resto vira texto na próxima carga.
+    const safe = messages.map((m) => ({
+      ...m,
+      cachedAudioUrl: null,
+      audioSrc:
+        m.audioSrc && /^https?:\/\//i.test(m.audioSrc) ? m.audioSrc : null,
+      variant:
+        m.variant === "voice" &&
+        !(m.audioSrc && /^https?:\/\//i.test(m.audioSrc))
+          ? ("message" as const)
+          : m.variant,
+    }))
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(safe))
   } catch {
     // storage full or blocked — ignore
@@ -173,6 +184,33 @@ export function WhatsAppChat() {
     [scheduleTimer]
   )
 
+  /** Resposta em áudio gerada pelo n8n: uma bolha de voz + transcrição. */
+  const appendAudioReply = useCallback(
+    (audioSrc: string, transcript: string, baseTime: string) => {
+      setIsTyping(true)
+      const delay = Math.min(
+        TYPING_MAX_MS,
+        Math.max(TYPING_MIN_MS, transcript.length * (TYPING_MS_PER_CHAR / 2))
+      )
+      scheduleTimer(() => {
+        const reply: ChatMessage = {
+          id: newId(),
+          text: transcript,
+          sender: "them",
+          time: baseTime,
+          variant: "voice",
+          voiceText: transcript,
+          audioSrc,
+          transcript: transcript || null,
+          cachedAudioUrl: null,
+        }
+        setMessages((prev) => [...prev, reply])
+        setIsTyping(false)
+      }, delay)
+    },
+    [scheduleTimer]
+  )
+
   const handleReset = useCallback(() => {
     timersRef.current.forEach((t) => clearTimeout(t))
     timersRef.current.clear()
@@ -224,9 +262,8 @@ export function WhatsAppChat() {
         )
       }, 1200)
 
-      const controller = new AbortController()
-      const timeoutId = scheduleTimer(() => controller.abort(), REQUEST_TIMEOUT_MS)
-
+      // Sem timeout no front: o n8n pode demorar o que precisar pra gerar o
+      // áudio. Abortar aqui só criaria conflito com a resposta que está vindo.
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -235,28 +272,29 @@ export function WhatsAppChat() {
             message: text,
             sessionId: sessionIdRef.current,
           }),
-          signal: controller.signal,
         })
-        clearTimeout(timeoutId)
-        timersRef.current.delete(timeoutId)
 
         if (!res.ok) throw new Error(`http ${res.status}`)
 
         const data = await res.json()
+
+        if (data.type === "audio" && data.audio) {
+          appendAudioReply(data.audio, (data.text ?? "").trim(), nowTime())
+          return
+        }
+
         const raw =
+          data.text ||
           data.output ||
           "Desculpe, não consegui processar sua mensagem. Tente novamente."
 
         appendReplies(raw, nowTime())
-      } catch (err) {
-        const aborted = err instanceof DOMException && err.name === "AbortError"
+      } catch {
         setMessages((prev) => [
           ...prev,
           {
             id: newId(),
-            text: aborted
-              ? "A resposta demorou demais. Tenta de novo em instantes."
-              : "Erro de conexão. Verifique sua internet e tente novamente.",
+            text: "Erro de conexão. Verifique sua internet e tente novamente.",
             sender: "them",
             time: nowTime(),
           },
@@ -264,7 +302,7 @@ export function WhatsAppChat() {
         setIsTyping(false)
       }
     },
-    [appendReplies, scheduleTimer, handleReset]
+    [appendReplies, appendAudioReply, scheduleTimer, handleReset]
   )
 
   const handleQuickReply = useCallback(
@@ -329,6 +367,8 @@ export function WhatsAppChat() {
                     text={message.voiceText}
                     time={message.time}
                     isMe={false}
+                    srcUrl={message.audioSrc ?? null}
+                    transcript={message.transcript ?? null}
                     cachedAudioUrl={message.cachedAudioUrl ?? null}
                     onCacheAudio={(id, url) => {
                       setMessages((prev) =>

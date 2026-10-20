@@ -12,6 +12,13 @@ interface AudioBubbleProps {
   onFail?: (messageId: string) => void
   cachedAudioUrl?: string | null
   onCacheAudio?: (messageId: string, url: string) => void
+  /**
+   * Áudio pronto, vindo do n8n (URL https ou data: URI). Quando presente, o
+   * componente NÃO chama o TTS local: só toca o que recebeu.
+   */
+  srcUrl?: string | null
+  /** Transcrição exibida abaixo da onda, como no WhatsApp. */
+  transcript?: string | null
 }
 
 interface TtsResponse {
@@ -45,9 +52,13 @@ export function AudioBubble({
   onFail,
   cachedAudioUrl,
   onCacheAudio,
+  srcUrl,
+  transcript,
 }: AudioBubbleProps) {
-  const [audioUrl, setAudioUrl] = useState<string | null>(cachedAudioUrl ?? null)
-  const [loading, setLoading] = useState(!cachedAudioUrl)
+  const [audioUrl, setAudioUrl] = useState<string | null>(
+    srcUrl ?? cachedAudioUrl ?? null
+  )
+  const [loading, setLoading] = useState(!srcUrl && !cachedAudioUrl)
   const [error, setError] = useState<string | null>(null)
   const [playing, setPlaying] = useState(false)
   const [duration, setDuration] = useState<number>(0)
@@ -56,6 +67,12 @@ export function AudioBubble({
   const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    if (srcUrl) {
+      setAudioUrl(srcUrl)
+      setLoading(false)
+      setError(null)
+      return
+    }
     if (cachedAudioUrl) {
       setAudioUrl(cachedAudioUrl)
       setLoading(false)
@@ -95,13 +112,16 @@ export function AudioBubble({
       cancelled = true
       controller.abort()
     }
-  }, [text, messageId, cachedAudioUrl, onCacheAudio, onFail])
+  }, [text, messageId, cachedAudioUrl, onCacheAudio, onFail, srcUrl])
 
   useEffect(() => {
     return () => {
-      if (audioUrl && !cachedAudioUrl) URL.revokeObjectURL(audioUrl)
+      // Só revoga blob criado aqui. URL/data: vinda do n8n não é objectURL.
+      if (audioUrl && !cachedAudioUrl && !srcUrl && audioUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(audioUrl)
+      }
     }
-  }, [audioUrl, cachedAudioUrl])
+  }, [audioUrl, cachedAudioUrl, srcUrl])
 
   const bars = useMemo(() => {
     const seed = text.length
@@ -187,6 +207,17 @@ export function AudioBubble({
           </div>
         </div>
       </div>
+      {transcript && (
+        <div className="mx-2 mb-1 rounded-md bg-black/[0.04] px-2.5 py-1.5">
+          <span className="mb-0.5 block text-[10px] font-medium uppercase tracking-wide text-[#8696a0]">
+            Transcrição
+          </span>
+          <p className="whitespace-pre-wrap text-[13.5px] leading-snug text-[#3b4a54]">
+            {transcript}
+          </p>
+        </div>
+      )}
+
       <div className="flex justify-end px-2 pb-1 pr-2.5">
         <span className="flex items-center gap-0.5 text-[11px] leading-none text-[#667781]">
           {time}
