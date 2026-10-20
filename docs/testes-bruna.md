@@ -213,6 +213,11 @@ promessa, fluxo preservado, JSON bem-formado.
 | CA-03 | Cliente manda áudio e a resposta leva ficha técnica (`#DOC:`) | `type: "text"` |
 | CA-04 | Cliente manda texto | `type: "text"` |
 | CA-05 | Cliente diz "não sei ler direito, manda áudio" | `type: "audio"` daí em diante |
+| CA-11 | Preferência áudio + resumo de fechamento com medidas | `type: "audio"` — preferência vence o conteúdo |
+| CA-12 | Preferência áudio + mensagem com link/ficha | `type: "text"` só nessa; a seguinte volta pro áudio |
+| CA-13 | Preferência áudio + mensagem com telefone, e-mail, CEP ou nº de pedido | `type: "text"` só nessa |
+| CA-14 | Preferência texto + cliente manda áudio | `type: "text"`, sem exceção |
+| CA-15 | Cliente troca de preferência no meio ("agora manda escrito") | Canal novo vale do turno seguinte em diante |
 | CA-06 | Cliente vinha em áudio e manda uma mensagem escrita curta | Segue o canal da mensagem atual: texto |
 | CA-07 | Resposta de reclamação/pós-venda, cliente mandou áudio | `type: "text"` |
 | CA-08 | `type: "audio"` sem campo `audio` no payload | Preview exibe o `text` como mensagem normal, não fica mudo |
