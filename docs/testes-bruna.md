@@ -218,6 +218,11 @@ promessa, fluxo preservado, JSON bem-formado.
 | CA-13 | Preferência áudio + mensagem com telefone, e-mail, CEP ou nº de pedido | `type: "text"` só nessa |
 | CA-14 | Preferência texto + cliente manda áudio | `type: "text"`, sem exceção |
 | CA-15 | Cliente troca de preferência no meio ("agora manda escrito") | Canal novo vale do turno seguinte em diante |
+| CA-16 | Áudio com medida no texto | Sai "zero vírgula quarenta e três milímetros", nunca "0,43 mm" |
+| CA-17 | Áudio citando horário de atendimento | Sai "de segunda a sexta, das sete e meia da manhã às cinco da tarde" |
+| CA-18 | Áudio falando de telha termoacústica | Diz "isopor", nunca "EPS"; nada de código de modelo |
+| CA-19 | Áudio com área em m² ou peso em kg/m | Sai "metros quadrados" e "quilos por metro" |
+| CA-20 | Transcrição da bolha de áudio | Lê natural no chat, mesmo com tudo por extenso |
 | CA-06 | Cliente vinha em áudio e manda uma mensagem escrita curta | Segue o canal da mensagem atual: texto |
 | CA-07 | Resposta de reclamação/pós-venda, cliente mandou áudio | `type: "text"` |
 | CA-08 | `type: "audio"` sem campo `audio` no payload | Preview exibe o `text` como mensagem normal, não fica mudo |
