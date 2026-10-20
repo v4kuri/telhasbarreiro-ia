@@ -15,6 +15,12 @@
 - **P9 — IMPORTANTE. Áudio.** O cliente pediu resposta em áudio para quem não lê. Confirmar:
   responde em áudio sempre que o lead manda áudio, ou só quando o lead pede?
   E qual voz/tom (o preview tem TTS).
+- **P27 — DEPOIS. Persistência da preferência de canal.** Hoje o fluxo não manda
+  `PREFERENCIA_CANAL`, então o Verificador só enxerga o pedido no turno em que
+  ele acontece; nos turnos seguintes ele se guia pelo formato da mensagem do
+  cliente e pela forma do rascunho. Quando o n8n passar esse campo (`audio`,
+  `texto` ou vazio, atualizado quando o cliente pedir), a preferência passa a
+  valer a conversa inteira, sem heurística.
 - **P10 — DEPOIS. Primeiro nome.** A IA vai receber o nome do lead do WhatsApp? Se não vier,
   pergunta o nome na abertura ou só no fechamento?
 

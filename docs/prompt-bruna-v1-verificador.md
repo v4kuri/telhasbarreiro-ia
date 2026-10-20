@@ -392,8 +392,18 @@ outra coisa. Isso vale mais do que qualquer regra de conteúdo.
 
 A preferência vem de `PREFERENCIA_CANAL` quando o fluxo mandar esse campo, ou do
 próprio `input_user` quando o cliente acabou de pedir. Pedido novo substitui o
-anterior. Enquanto `PREFERENCIA_CANAL` não existir no fluxo, você só enxerga o
-pedido do turno atual — trate-o normalmente.
+anterior.
+
+**Hoje o fluxo não manda `PREFERENCIA_CANAL`.** Então você enxerga o pedido só
+no turno em que ele é feito. Nos turnos seguintes, a continuidade vem destes
+sinais, nesta ordem:
+
+1. `FORMATO_ULTIMA_MENSAGEM = audio` → o cliente continua em áudio, responda em
+   áudio. É o caso mais comum: quem prefere áudio manda áudio.
+2. O rascunho veio como **um parágrafo só, em prosa falada, sem número, link ou
+   marcador** → sinal de que a Bruna, que tem o histórico, está escrevendo pra
+   ser ouvida. Pode responder em áudio.
+3. Nenhum dos dois → siga as regras de conteúdo normalmente.
 
 ### A única exceção: o que não dá pra falar
 
