@@ -219,6 +219,23 @@ promessa, fluxo preservado, JSON bem-formado.
 | CA-09 | Áudio em base64, recarregar a página | Bolha continua tocando (blob restaurado do IndexedDB) |
 | CA-10 | Áudio por URL https, recarregar a página | Bolha continua sendo áudio |
 
+### Regressão: o revisor respondendo o rascunho (REG-01)
+
+Achado real na primeira rodada contra o n8n (20/10/2026): com
+`input_user: "Olá"` e o rascunho trazendo a apresentação completa, o Verificador
+emitiu *"Para eu seguir com seu atendimento, você está procurando telhas..."* —
+jogou fora a saudação e a apresentação, tratando o rascunho como mensagem que o
+cliente já tinha recebido.
+
+| ID | Entrada | Esperado |
+|---|---|---|
+| REG-01 | `input_user: "Olá"` + rascunho com apresentação | Saída preserva saudação e apresentação, em duas bolhas |
+| REG-02 | Rascunho sem nenhum defeito | Passa intacto, só quebrado em bolhas |
+| REG-03 | Rascunho com apresentação e `input_user` respondendo medida | Pode cortar a apresentação (conversa em andamento) |
+| REG-04 | Rascunho pergunta X | A saída pergunta X. Nunca a pergunta seguinte |
+
+Regra defendida: seção "REGRA ZERO: o rascunho ainda NÃO foi enviado".
+
 ### Robustez de saída (Verificador)
 
 - Começa com `{`, termina com `}`, chave `messages`, valores não-vazios.
@@ -260,4 +277,5 @@ promessa, fluxo preservado, JSON bem-formado.
 | Robustez JSON (incl. campo `type`) | [ ] |
 | Canal texto × áudio (CA-01 a CA-10) | [ ] |
 | Teto de 8 turnos respeitado | [ ] |
+| Regressão REG-01 a REG-04 | [ ] |
 | Nenhum achado crítico/alto aberto | [ ] |
