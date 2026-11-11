@@ -2,6 +2,7 @@
 // e devolve pra UI um envelope normalizado { type, text, audio }.
 //
 // Contrato de resposta esperado do n8n (qualquer uma destas formas):
+//   { "type": "text",  "body": "primeira bolha#SPLIT#segunda bolha" }
 //   { "type": "text",  "text": "..." }
 //   { "type": "audio", "text": "transcrição", "audio": "https://.../a.mp3" }
 //   { "type": "audio", "text": "transcrição", "audio": "data:audio/mpeg;base64,..." }
@@ -21,6 +22,7 @@ const N8N_WEBHOOK_URL =
 type Json = Record<string, unknown>
 
 const TEXT_KEYS = [
+  "body",
   "text",
   "texto",
   "transcricao",
@@ -31,7 +33,6 @@ const TEXT_KEYS = [
   "content",
   "reply",
   "answer",
-  "body",
 ] as const
 
 const AUDIO_KEYS = [
@@ -75,12 +76,13 @@ function unwrap(value: unknown, depth = 0): unknown {
     if (
       "type" in value ||
       "text" in value ||
+      "body" in value ||
       "audio" in value ||
       "messages" in value
     ) {
       return value
     }
-    for (const key of ["output", "data", "json", "body", "result", "response"]) {
+    for (const key of ["output", "data", "json", "result", "response"]) {
       if (key in value) return unwrap(value[key], depth + 1)
     }
   }
@@ -149,8 +151,26 @@ interface Normalized {
   audio: string
 }
 
+/**
+ * O n8n costuma devolver o JSON do agente como string dentro de `output`, com o
+ * áudio como irmão: { output: "{\"type\":...}", audio: "...", mime: "..." }.
+ * Aqui a gente funde os dois, sem perder nenhum dos lados.
+ */
+function mergeInner(value: unknown): unknown {
+  if (!isObj(value)) return value
+  for (const key of ["output", "data", "json", "result", "response"]) {
+    if (!(key in value)) continue
+    const inner = unwrap(value[key])
+    if (isObj(inner)) {
+      const { [key]: _drop, ...outer } = value
+      return { ...inner, ...outer }
+    }
+  }
+  return value
+}
+
 function normalize(raw: string): Normalized {
-  const payload = unwrap(raw)
+  const payload = mergeInner(unwrap(raw))
 
   if (typeof payload === "string") {
     return { type: "text", text: payload.trim(), audio: "" }

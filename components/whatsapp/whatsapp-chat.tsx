@@ -10,7 +10,7 @@ import {
   type ChatMessage,
 } from "./message-bubble"
 import { AudioBubble } from "./audio-bubble"
-import { splitMessages } from "@/lib/parse-markers"
+import { splitMessages, stripSpeechTags } from "@/lib/parse-markers"
 import {
   clearAudios,
   dataUriToBlob,
@@ -232,6 +232,7 @@ export function WhatsAppChat() {
         TYPING_MAX_MS,
         Math.max(TYPING_MIN_MS, transcript.length * (TYPING_MS_PER_CHAR / 2))
       )
+      const spoken = stripSpeechTags(transcript)
       scheduleTimer(() => {
         const id = newId()
         // base64/data URI vira Blob: menos string gigante na memória e no DOM,
@@ -242,14 +243,14 @@ export function WhatsAppChat() {
 
         const reply: ChatMessage = {
           id,
-          text: transcript,
+          text: spoken,
           sender: "them",
           time: baseTime,
           variant: "voice",
-          voiceText: transcript,
+          voiceText: spoken,
           audioSrc: src,
           audioStored: Boolean(blob),
-          transcript: transcript || null,
+          transcript: spoken || null,
           cachedAudioUrl: null,
         }
         setMessages((prev) => [...prev, reply])

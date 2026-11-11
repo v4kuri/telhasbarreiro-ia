@@ -404,3 +404,19 @@ export function formatWhatsAppText(input: string): Segment[] {
   if (last < input.length) out.push({ kind: "plain", text: input.slice(last) })
   return out
 }
+
+/**
+ * Remove as tags de voz da ElevenLabs do texto exibido.
+ * O mesmo texto serve de roteiro falado e de transcrição: `[warmly]` e
+ * `<break time="0.5s" />` orientam a voz, mas não podem aparecer pro cliente.
+ */
+const SPEECH_TAG_RE = /\[(?:[a-zA-Z][a-zA-Z _-]{1,28})\]|<break[^>]*>/gi
+
+export function stripSpeechTags(input: string): string {
+  return input
+    .replace(SPEECH_TAG_RE, "")
+    .replace(/[^\S\n]{2,}/g, " ")
+    .replace(/[^\S\n]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+}

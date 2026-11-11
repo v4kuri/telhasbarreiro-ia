@@ -1,13 +1,50 @@
 # Questionário para a Telhas Barreiro
 
-> Pronto pra enviar. São as informações que **não existem** em nenhum material
-> recebido (briefing preenchido, as 4 fichas técnicas, site, blog, Instagram,
-> site da Diamante) e que hoje a Bruna é obrigada a empurrar pro vendedor.
-> Cada resposta aqui transforma uma transferência em uma resposta imediata.
-> Atualizado em 20/10/2026, depois da rodada 1 de testes contra o fluxo real.
+> **Respondido pelo cliente em 11/11/2026.** O que foi respondido já entrou no
+> [prompt-bruna-v2-final.md](prompt-bruna-v2-final.md). O que sobrou está na
+> seção "Ainda em aberto", no fim deste arquivo.
 
-Para mandar direto no WhatsApp, use a versão em mensagens:
-[04-perguntas-whatsapp.md](04-perguntas-whatsapp.md).
+## Respondido
+
+| Tema | Resposta |
+|---|---|
+| **Cores** | Branca, cerâmica, amadeirada, preta, marrom, bege, cinza claro, cinza escuro e azul escuro. Vale para todos os modelos. O cliente informa a cor **e a face** (superior/inferior). **O tom pode variar conforme o lote** |
+| **Pré-pintada x eletrostática** | Pré-pintada vem da usina, mais barata e mais rápida. Eletrostática é pintada depois, mais flexível em cor, com custo e prazo maiores. As duas são duráveis |
+| **Forro amadeirado** | Mesmo modelo e mesma ficha técnica do forro branco; o manuseio vale para os dois |
+| **Prazo de fabricação** | Simples 1-2 dias · simples pré-pintada 7 · simples eletrostática 10-15 · sanduíche sem pintura até 5 · sanduíche pré-pintada 7 · sanduíche eletrostática 10-15 · forro branca até 5 · forro amadeirada até 7 · forro pré-pintada até 7 · forro eletrostática 10-15 · painel 7 · ferragens 1-2. Sempre como **estimativa**, conferindo o acabamento antes |
+| **Prazo de entrega** | Fica com o vendedor |
+| **Frete** | Vendedor calcula pelo CEP e pelo volume |
+| **Pedido mínimo** | Não existe |
+| **Comprimento** | Até **8 metros em todos os modelos**. Acima disso, transpasse: alongamento de 20 a 30 cm na telha de cima, com perfil de apoio na junção, e a medida é informada pelo cliente |
+| **Pagamento** | Dinheiro, Pix e cartão. Boleto sujeito a análise de cadastro. Cartão em até 10x com taxas da operadora; a vendedora simula |
+| **CPF x CNPJ** | Preço de fábrica para os dois, mesma política. O que muda é o volume |
+| **Treliça** | Não vendem pronta. Vendem perfil e metalon para o cliente fabricar treliça e terça |
+| **Venda completa** | Sempre oferecer estrutura (perfil e metalon) e acessórios (parafuso, veda calha, PU, disco de corte) junto das telhas |
+| **Carteira e rodízio** | Lead novo entra no rodízio entre as vendedoras disponíveis, com Carine e Edilaine recebendo 2 para cada 1 de Erica, Fabíola e Rosilene. Cliente atendido antes volta para a mesma vendedora, inclusive no pós-venda; na ausência dela, outra assume |
+| **Dados de instalação** | Confirmado: a Bruna pode repetir o que está na ficha |
+| **Horário** | Segunda a sexta, das 07h30 às **17h15** |
+| **Validade do orçamento** | 1 dia |
+| **Voz do áudio** | Feminina, jovem e mais firme |
+| **Catálogo** | Enviado por WhatsApp |
+
+## Ainda em aberto
+
+1. **"Obra grande"**: o cliente não entendeu a pergunta. Precisamos de um número
+   (a partir de X m² ou X peças) ou da confirmação de que não existe atendimento
+   B2B separado — hoje todo lead entra no mesmo rodízio.
+2. **Diamante Telhas**: não responderam se a marca muda conforme a região do
+   cliente, nem o que a Bruna pode dizer quando perguntarem a relação entre as
+   duas empresas.
+3. **Endereço de Petrópolis**: falta confirmar Estrada União e Indústria, 7521,
+   Nogueira.
+4. **Campanha ativa**: não responderam se existe cupom em vigor e se a Bruna
+   pode citar.
+5. **Follow-up**: temos "1 dia útil", mas falta o horário de disparo e se pode
+   mandar no sábado.
+6. **Catálogo**: foi enviado por WhatsApp ao cliente, mas o arquivo ou link ainda
+   não chegou até nós para a Bruna poder mandar.
+
+---
 
 ## Como ler
 
