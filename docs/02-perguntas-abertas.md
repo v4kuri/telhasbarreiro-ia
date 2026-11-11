@@ -113,3 +113,44 @@
   operacionais que o cliente colou (confirmação de pedido, descarga, retirada) —
   que, por sinal, mostram um tom com emoji e caixa alta de alerta. Vale conseguir as conversas
   antes da versão de produção.
+
+
+---
+
+## Pesquisa de 10/11/2026 — o que a web respondeu e o que não respondeu
+
+Varredura em telhasbarreiro.com.br (home, sobre, produtos, blog posts 15 e 17),
+nas 4 fichas técnicas publicadas, no Instagram @telhasbarreiro, no Linktree e em
+diamantetelhas.com.br (home e produtos).
+
+**Respondido, já incorporado ao prompt:**
+
+- Unidade do **DDD 31 é Belo Horizonte/MG**: Rua José dos Santos Lage, 580,
+  Teixeira Dias, bairro Barreiro, CEP 30644-220.
+- Telha galvalume também existe em perfil **ondulado**, além do trapezoidal
+  (blog post 17).
+- A empresa referencia as normas **NBR 7008 e NBR 7009** para telha metálica.
+- A **Diamante lista treliça** no catálogo: TG 12M, TG 8L, TR 8 e TR 12, as TG
+  com 12 metros. Como é catálogo da Diamante e não da Telhas Barreiro, segue
+  como não autorizado para a Bruna até o cliente confirmar.
+- Outro telefone publicado no blog: (31) 97302-7230. O oficial do briefing
+  continua sendo o WhatsApp (31) 9936-6683.
+
+**Continua sem fonte, portanto segue como handoff no prompt:**
+
+- Lista de **cores** e padrões de pintura. Nem o site, nem a Diamante, nem o
+  Instagram publicam. Concorrentes do setor costumam trabalhar com RAL 9003
+  branco como padrão e cinza, vermelho, azul, verde e amarelo como opção, mas
+  isso é prática de mercado, não informação da Telhas Barreiro, e a Bruna não
+  pode afirmar em nome deles.
+- **Forro amadeirado**: existe (Instagram e o PDF de manuseio), sem padrões nem
+  condições publicados.
+- **Prazo de fabricação e de entrega**: nenhuma fonte.
+- **Frete** e regiões com cotação manual: nenhuma fonte.
+- **Comprimento mínimo e máximo da telha simples**: nenhuma fonte. Fabricantes
+  mineiros do mesmo porte anunciam de 6 a 12 metros sob medida, o que confirma
+  que o número varia por fábrica e não pode ser deduzido.
+- **Pedido mínimo**, parcelamento, regra de CNPJ, filas de vendedores e
+  responsável por pós-venda: nenhuma fonte.
+- **Horário**: o site diz 07h30 às 17h15 e o briefing diz 07h30 às 17h.
+  Adotado o briefing.
